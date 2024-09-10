@@ -2,10 +2,10 @@
   "name": "equidna/toolkit",
   "autoload": {
     "psr-4": {
-      "Equidna\\Tools\\": "src/"
+      "Equidna\\Toolkit\\": "src/"
     }
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "authors": [
     {
       "name": "Gabriel Ruelas",
