@@ -1,0 +1,23 @@
+{
+  "name": "equidna/toolkit",
+  "autoload": {
+    "psr-4": {
+      "Equidna\\Tools\\": "src/"
+    }
+  },
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Gabriel Ruelas",
+      "email": "gruelasjr@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.0"
+  },
+  "require-dev": {
+    "illuminate/support": "^11.21",
+    "laravel/helpers": "^1.7",
+    "laravel/framework": "^11.21"
+  }
+}
