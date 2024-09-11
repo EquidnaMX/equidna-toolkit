@@ -1,11 +1,8 @@
 {
   "name": "equidna/toolkit",
-  "autoload": {
-    "psr-4": {
-      "Equidna\\Toolkit\\": "src/"
-    }
-  },
   "version": "0.1.1",
+  "type": "library",
+  "license": "MIT",
   "authors": [
     {
       "name": "Gabriel Ruelas",
@@ -19,5 +16,10 @@
     "illuminate/support": "^11.21",
     "laravel/helpers": "^1.7",
     "laravel/framework": "^11.21"
+  },
+  "autoload": {
+    "psr-4": {
+      "Equidna\\Toolkit\\": "src/"
+    }
   }
 }
