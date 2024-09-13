@@ -59,4 +59,30 @@ class ResponseHelper
 
         return redirect($forward_url)->withErrors([$message])->withInput();
     }
+
+    public static function notFound(string $message, string $forward_url = null): Response|RedirectResponse
+    {
+        if (RouteHelper::isAPI() || RouteHelper::isHook()) {
+            return response($message, 404);
+        }
+
+        if (is_null($forward_url)) {
+            return back()->withErrors([$message])->withInput();
+        }
+
+        return redirect($forward_url)->withErrors([$message])->withInput();
+    }
+
+    public static function error(string $message, string $forward_url = null): Response|RedirectResponse
+    {
+        if (RouteHelper::isAPI() || RouteHelper::isHook()) {
+            return response($message, 500);
+        }
+
+        if (is_null($forward_url)) {
+            return back()->withErrors([$message])->withInput();
+        }
+
+        return redirect($forward_url)->withErrors([$message])->withInput();
+    }
 }
