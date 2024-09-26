@@ -42,9 +42,13 @@ Provides static methods to handle error responses, each method returns a Redirec
 web or a Response with the apropiate respose code if otherwise.
 
 > ResponseHelper::badRequest(string $message, string $forward_url = null)
+
 > ResponseHelper::unauthorized(string $message, string $forward_url = null)
+
 > ResponseHelper::forbidden(string $message, string $forward_url = null)
+
 > ResponseHelper::notFound(string $message, string $forward_url = null)
+
 > ResponseHelper::error(string $message, string $forward_url = null)
 
 The ResponseHelper::handleException(Exception $exception, string $forward_url = null) receives and exception and return the apropiate response using the previous functions
