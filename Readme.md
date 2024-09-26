@@ -30,9 +30,11 @@ Enables an eloquent model to have a composite primary key
 
 Provides static methods for knowing if a request is from web,api or hook
 
-> RouteHelper::isWeb()
-> RouteHelper::isApi()
-> RouteHelper::isHook()
+```
+RouteHelper::isWeb()
+RouteHelper::isApi()
+RouteHelper::isHook()
+```
 
 ### ResponseHelper
 
