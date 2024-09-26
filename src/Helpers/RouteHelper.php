@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @author Gabriel Ruelas
+ * @license MIT
+ * @version 1.0.0
+ *
+ */
+
 namespace Equidna\Toolkit\Helpers;
 
 class RouteHelper
