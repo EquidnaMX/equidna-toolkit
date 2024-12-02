@@ -12,13 +12,6 @@
   "require": {
     "php": "^8.0"
   },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Equidna\\Toolkit\\Providers\\EquidnaServiceProvider"
-      ]
-    }
-  },
   "require-dev": {
     "illuminate/support": "^11.21",
     "laravel/helpers": "^1.7",
@@ -27,6 +20,13 @@
   "autoload": {
     "psr-4": {
       "Equidna\\Toolkit\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Equidna\\Toolkit\\Providers\\EquidnaServiceProvider"
+      ]
     }
   }
 }
