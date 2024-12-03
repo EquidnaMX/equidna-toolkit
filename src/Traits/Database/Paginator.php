@@ -29,15 +29,15 @@ trait Paginator
     public function scopePaginator(
         Builder $query,
         string $pageName = 'page',
-        int $page = 1,
-        null|int $page_items = null,
+        null|int $page = 1,
+        null|int $perPage = null,
         null|callable $transformation = null
     ): LengthAwarePaginator|array {
 
-        $page_items = $page_items ?? config('equidna.paginator.page_items');
+        $perPage = $perPage ?? config('equidna.paginator.page_items');
 
         $paginator = $query->paginate(
-            $page_items,
+            $perPage,
             ['*'],
             $pageName,
             $page ?? config('apollo.page')

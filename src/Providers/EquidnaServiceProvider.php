@@ -1,5 +1,12 @@
 <?php
 
+/*
+@author Gabriel Ruelas
+@licence MIT
+@version 1.0.0
+
+*/
+
 namespace Equidna\Toolkit\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -10,7 +17,6 @@ class EquidnaServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
     }
-
 
     public function boot(): void
     {
