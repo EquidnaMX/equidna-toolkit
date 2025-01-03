@@ -16,6 +16,11 @@ class RouteHelper
         //
     }
 
+    public static function isWeb(): bool
+    {
+        return !self::isAPI() && !self::isHook() && !self::isIoT();
+    }
+
     /**
      * Determine if the request is an API request.
      *
@@ -44,5 +49,10 @@ class RouteHelper
     public static function isIoT(): bool
     {
         return request()->is('iot/*');
+    }
+
+    public static function isConsole(): bool
+    {
+        return app()->runningInConsole();
     }
 }
