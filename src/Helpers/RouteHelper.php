@@ -18,7 +18,10 @@ class RouteHelper
 
     public static function isWeb(): bool
     {
-        return !self::isAPI() && !self::isHook() && !self::isIoT();
+        return !self::isAPI()
+            && !self::isHook()
+            && !self::isIoT()
+            && !self::isConsole();
     }
 
     /**
@@ -51,6 +54,22 @@ class RouteHelper
         return request()->is('iot/*');
     }
 
+    /**
+     * Determines if the given string is a valid expression.
+     *
+     * @param string $expression The string to evaluate.
+     * @return bool Returns true if the string is a valid expression, false otherwise.
+     */
+    public function isExpression(string $expression): bool
+    {
+        return request()->is($expression);
+    }
+
+    /**
+     * Determine if the application is running in the console.
+     *
+     * @return bool True if the application is running in the console, false otherwise.
+     */
     public static function isConsole(): bool
     {
         return app()->runningInConsole();

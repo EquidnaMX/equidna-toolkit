@@ -34,6 +34,9 @@ Provides static methods for knowing if a request is from web,api or hook
 RouteHelper::isWeb()
 RouteHelper::isApi()
 RouteHelper::isHook()
+RouteHelper::isIoT()
+RouteHelper::isExpression()
+RouteHelper::isConsole()
 ```
 
 ### ResponseHelper
@@ -48,6 +51,7 @@ ResponseHelper::badRequest(string $message, string $forward_url = null)
 ResponseHelper::unauthorized(string $message, string $forward_url = null)
 ResponseHelper::forbidden(string $message, string $forward_url = null)
 ResponseHelper::notFound(string $message, string $forward_url = null)
+ResponseHelper::conflict(string $message, string $forward_url = null)
 ResponseHelper::error(string $message, string $forward_url = null)
 ResponseHelper::handleException(Exception $exception, string $forward_url = null)
 ```
