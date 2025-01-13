@@ -60,7 +60,7 @@ class RouteHelper
      * @param string $expression The string to evaluate.
      * @return bool Returns true if the string is a valid expression, false otherwise.
      */
-    public function isExpression(string $expression): bool
+    public static function isExpression(string $expression): bool
     {
         return request()->is($expression);
     }
