@@ -31,7 +31,13 @@ class RouteHelper
      */
     public static function isAPI(): bool
     {
-        return request()->is('api/*');
+        $firstSegment = request()->segment(1);
+
+        $is_api = (stripos($firstSegment, 'api') !== false)
+            || request()->attributes->get('api_response')
+            || request()->has('api_response');
+
+        return $is_api;
     }
 
     /**

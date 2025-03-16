@@ -10,6 +10,7 @@
 namespace Equidna\Toolkit\Helpers;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
@@ -32,14 +33,19 @@ class ResponseHelper
      *
      * @return string|Response|RedirectResponse The generated response, which could be a string, a Response object, or a RedirectResponse object.
      */
-    private static function generateResponse(int $error_code, string $message, string $forward_url = null): string|Response|RedirectResponse
+    private static function generateResponse(int $error_code, string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
     {
         if (RouteHelper::isConsole()) {
             return $message;
         }
 
         if (RouteHelper::isAPI() || RouteHelper::isHook()) {
-            return response($message, $error_code);
+            $response = [
+                'message' => $message,
+                'error_code' => $error_code
+            ];
+
+            return JsonResponse($response, $error_code);
         }
 
         if (is_null($forward_url)) {
@@ -56,7 +62,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function badRequest(string $message, string $forward_url = null): string|Response|RedirectResponse
+    public static function badRequest(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(400, $message, $forward_url);
     }
@@ -68,7 +74,7 @@ class ResponseHelper
      * @param string|null $forward_url The URL to forward to, if any.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function unautorized(string $message, string $forward_url = null): string|Response|RedirectResponse
+    public static function unautorized(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(401, $message, $forward_url);
     }
@@ -80,7 +86,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function forbidden(string $message, string $forward_url = null): string|Response|RedirectResponse
+    public static function forbidden(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(403, $message, $forward_url);
     }
@@ -92,7 +98,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function notFound(string $message, string $forward_url = null): string|Response|RedirectResponse
+    public static function notFound(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(404, $message, $forward_url);
     }
@@ -104,7 +110,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function conflict(string $message, string $forward_url = null): string|Response|RedirectResponse
+    public static function conflict(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(409, $message, $forward_url);
     }
@@ -128,7 +134,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated error response.
      */
-    public static function error(string $message, string $forward_url = null): string|Response|RedirectResponse
+    public static function error(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(500, $message, $forward_url);
     }
@@ -140,7 +146,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to forward to in case of an error.
      * @return string|Response|RedirectResponse The response corresponding to the exception code.
      */
-    public static function handleException(Exception $exception, string $forward_url = null): Response|RedirectResponse
+    public static function handleException(Exception $exception, ?string $forward_url): string|JsonResponse|RedirectResponse
     {
         switch ($exception->getCode()) {
             case 400:
