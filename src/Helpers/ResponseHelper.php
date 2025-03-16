@@ -62,7 +62,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function badRequest(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
+    public static function badRequest(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(400, $message, $forward_url);
     }
@@ -74,7 +74,7 @@ class ResponseHelper
      * @param string|null $forward_url The URL to forward to, if any.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function unautorized(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
+    public static function unautorized(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(401, $message, $forward_url);
     }
@@ -86,7 +86,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function forbidden(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
+    public static function forbidden(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(403, $message, $forward_url);
     }
@@ -98,7 +98,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function notFound(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
+    public static function notFound(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(404, $message, $forward_url);
     }
@@ -110,7 +110,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function conflict(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
+    public static function conflict(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(409, $message, $forward_url);
     }
@@ -134,7 +134,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated error response.
      */
-    public static function error(string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
+    public static function error(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
         return self::generateResponse(500, $message, $forward_url);
     }
@@ -146,7 +146,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to forward to in case of an error.
      * @return string|Response|RedirectResponse The response corresponding to the exception code.
      */
-    public static function handleException(Exception $exception, ?string $forward_url): string|JsonResponse|RedirectResponse
+    public static function handleException(Exception $exception, ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
         switch ($exception->getCode()) {
             case 400:
