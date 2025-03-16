@@ -33,7 +33,7 @@ class ResponseHelper
      *
      * @return string|Response|RedirectResponse The generated response, which could be a string, a Response object, or a RedirectResponse object.
      */
-    private static function generateResponse(int $error_code, string $message, ?string $forward_url): string|JsonResponse|RedirectResponse
+    private static function generateResponse(int $status, string $message, ?string $forward_url)
     {
         if (RouteHelper::isConsole()) {
             return $message;
@@ -42,10 +42,14 @@ class ResponseHelper
         if (RouteHelper::isAPI() || RouteHelper::isHook()) {
             $response = [
                 'message' => $message,
-                'error_code' => $error_code
+                'code'    => $status
             ];
 
-            return JsonResponse($response, $error_code);
+            return response()
+                ->json(
+                    $response,
+                    $status
+                );
         }
 
         if (is_null($forward_url)) {
