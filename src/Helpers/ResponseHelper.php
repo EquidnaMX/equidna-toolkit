@@ -27,13 +27,13 @@ class ResponseHelper
     /**
      * Generates a response based on the context (console, API, hook, or web).
      *
-     * @param int $error_code The error code to be used in the response.
+     * @param int $status The HTTP status code of the operation.
      * @param string $message The message to be included in the response.
      * @param string|null $forward_url The URL to redirect to if applicable. Default is null.
      *
-     * @return string|Response|RedirectResponse The generated response, which could be a string, a Response object, or a RedirectResponse object.
+     * @return mixed
      */
-    private static function generateResponse(int $status, string $message, ?string $forward_url)
+    private static function generateResponse(int $status, string $message, ?string $forward_url): mixed
     {
         if (RouteHelper::isConsole()) {
             return $message;
