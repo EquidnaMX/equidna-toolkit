@@ -19,7 +19,6 @@ class ExcludeFromHistory
     public function handle(Request $request, Closure $next): Response
     {
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $response = $next($request);
-        return $response;
+        return $next($request);
     }
 }
