@@ -169,7 +169,6 @@ class ResponseHelper
      * @param string $message The error message to be included in the response.
      * @param array $errors An array of errors to include in the response. Default is an empty array.
      * @param string|null $forward_url Optional URL to redirect to.
-     * @return string|Response|RedirectResponse The generated error response.
      */
     public static function error(string $message, array $errors = [], ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
@@ -180,6 +179,7 @@ class ResponseHelper
             forward_url: $forward_url
         );
     }
+
 
     public static function success(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
