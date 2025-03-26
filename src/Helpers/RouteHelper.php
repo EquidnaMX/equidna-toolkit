@@ -33,11 +33,7 @@ class RouteHelper
     {
         $firstSegment = request()->segment(1);
 
-        $is_api = (stripos($firstSegment, 'api') !== false)
-            || request()->attributes->get('api_response')
-            || request()->has('api_response');
-
-        return $is_api;
+        return (stripos($firstSegment, 'api') !== false);
     }
 
     /**
