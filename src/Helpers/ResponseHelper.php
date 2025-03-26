@@ -69,7 +69,7 @@ class ResponseHelper
      * @param string|null $forward_url Optional URL to redirect to.
      * @return string|Response|RedirectResponse The generated response.
      */
-    public static function badRequest(string $message, array $errors = [], ?string $forward_url = null)
+    public static function badRequest(string $message, array $errors = [], ?string $forward_url = null): mixed
     {
         return self::generateResponse(
             status: 400,
