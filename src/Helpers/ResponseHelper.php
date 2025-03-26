@@ -40,7 +40,7 @@ class ResponseHelper
             return $message;
         }
 
-        if (RouteHelper::isAPI() || RouteHelper::isHook()) {
+        if (RouteHelper::isAPI() || RouteHelper::isHook() || request()->attributes->get('api_response')) {
             $response = [
                 'code'    => $status,
                 'message' => $message,
