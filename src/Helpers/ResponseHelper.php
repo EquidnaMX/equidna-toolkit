@@ -187,6 +187,27 @@ class ResponseHelper
         );
     }
 
+    public static function success(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
+    {
+        return self::generateResponse(
+            status: 200,
+            message: $message,
+            errors: [],
+            forward_url: $forward_url
+        );
+    }
+
+    public static function created(string $message, ?string $forward_url = null): string|JsonResponse|RedirectResponse
+    {
+        return self::generateResponse(
+            status: 201,
+            message: $message,
+            errors: [],
+            forward_url: $forward_url
+        );
+    }
+
+
     /**
      * Handles exceptions and returns an appropriate response based on the exception code.
      *
