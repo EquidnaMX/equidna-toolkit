@@ -134,6 +134,24 @@ class ResponseHelper
     }
 
     /**
+     * Generates a 406 Not acceptable Response.
+     *
+     * @param string $message The message to include in the response.
+     * @param array $errors An array of errors to include in the response. Default is an empty array.
+     * @param string|null $forward_url Optional URL to redirect to.
+     * @return string|Response|RedirectResponse The generated response.
+     */
+    public static function notAcceptable(string $message, array $errors = [], ?string $forward_url = null): string|JsonResponse|RedirectResponse
+    {
+        return self::generateResponse(
+            status: 406,
+            message: $message,
+            errors: $errors,
+            forward_url: $forward_url
+        );
+    }
+
+    /**
      * Generates a 409 Conflict response.
      *
      * @param string $message The message to include in the response.
@@ -187,6 +205,8 @@ class ResponseHelper
                 return self::forbidden($exception->getMessage(), $errors, $forward_url);
             case 404:
                 return self::notFound($exception->getMessage(), $errors, $forward_url);
+            case 406:
+                return self::notAcceptable($exception->getMessage(), $errors, $forward_url);
             case 409:
                 return self::conflict($exception->getMessage(), $errors, $forward_url);
             case 500:
