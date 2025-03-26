@@ -101,7 +101,6 @@ class ResponseHelper
      * @param string $message The message to include in the response.
      * @param array $errors An array of errors to include in the response. Default is an empty array.
      * @param string|null $forward_url Optional URL to redirect to.
-     * @return string|Response|RedirectResponse The generated response.
      */
     public static function forbidden(string $message, array $errors = [], ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
@@ -119,7 +118,6 @@ class ResponseHelper
      * @param string $message The message to include in the response.
      * @param array $errors An array of errors to include in the response. Default is an empty array.
      * @param string|null $forward_url Optional URL to redirect to.
-     * @return string|Response|RedirectResponse The generated response.
      */
     public static function notFound(string $message, array $errors = [], ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
@@ -137,7 +135,6 @@ class ResponseHelper
      * @param string $message The message to include in the response.
      * @param array $errors An array of errors to include in the response. Default is an empty array.
      * @param string|null $forward_url Optional URL to redirect to.
-     * @return string|Response|RedirectResponse The generated response.
      */
     public static function notAcceptable(string $message, array $errors = [], ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
@@ -155,7 +152,6 @@ class ResponseHelper
      * @param string $message The message to include in the response.
      * @param array $errors An array of errors to include in the response. Default is an empty array.
      * @param string|null $forward_url Optional URL to redirect to.
-     * @return string|Response|RedirectResponse The generated response.
      */
     public static function conflict(string $message, array $errors = [], ?string $forward_url = null): string|JsonResponse|RedirectResponse
     {
