@@ -33,7 +33,7 @@ class RouteHelper
     {
         $firstSegment = request()->segment(1);
 
-        return (stripos($firstSegment, 'api') !== false);
+        return preg_match('/\b(api|[a-zA-Z0-9]+-api|api-[a-zA-Z0-9]+)\b/i', $firstSegment) === 1;
     }
 
     /**
