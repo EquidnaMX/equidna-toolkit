@@ -3,7 +3,7 @@
 /**
  * @author Gabriel Ruelas
  * @license MIT
- * @version 1.0.0
+ * @version 1.2.1
  *
  */
 
@@ -11,62 +11,6 @@ namespace Equidna\Toolkit\Helpers;
 
 class RouteHelper
 {
-    private function __construct()
-    {
-        //
-    }
-
-    public static function isWeb(): bool
-    {
-        return !self::isAPI()
-            && !self::isHook()
-            && !self::isIoT()
-            && !self::isConsole();
-    }
-
-    /**
-     * Determine if the request is an API request.
-     *
-     * @return bool
-     */
-    public static function isAPI(): bool
-    {
-        $firstSegment = request()->segment(1);
-
-        return preg_match('/\b(api|[a-zA-Z0-9]+-api|api-[a-zA-Z0-9]+)\b/i', $firstSegment) === 1;
-    }
-
-    /**
-     * Determine if the request is a hook request.
-     *
-     * @return bool
-     */
-    public static function isHook(): bool
-    {
-        return request()->is('hooks/*');
-    }
-
-    /**
-     * Determine if the request is an IoT request.
-     *
-     * @return bool
-     */
-    public static function isIoT(): bool
-    {
-        return request()->is('iot/*');
-    }
-
-    /**
-     * Determines if the given string is a valid expression.
-     *
-     * @param string $expression The string to evaluate.
-     * @return bool Returns true if the string is a valid expression, false otherwise.
-     */
-    public static function isExpression(string $expression): bool
-    {
-        return request()->is($expression);
-    }
-
     /**
      * Determine if the application is running in the console.
      *
@@ -74,6 +18,123 @@ class RouteHelper
      */
     public static function isConsole(): bool
     {
-        return app()->runningInConsole();
+        try {
+            return app()->runningInConsole();
+        } catch (\Exception $e) {
+            // Fallback for cases where app() is not available
+            return php_sapi_name() === 'cli';
+        }
+    }
+
+    /**
+     * Determine if the request is a web request.
+     *
+     * @return bool True if the request is a web request, false otherwise.
+     */
+    public static function isWeb(): bool
+    {
+        return !(self::isAPI() || self::isHook() || self::isIoT() || self::isConsole());
+    }
+
+    /**
+     * Determine if the request is an API request.
+     *
+     * @return bool True if the request is an API request, false otherwise.
+     */
+    public static function isAPI(): bool
+    {
+        $firstSegment = request()?->segment(1);
+
+        if (is_null($firstSegment)) {
+            return false;
+        }
+
+        return preg_match('/^(api|.*-api|api-.*)$/i', $firstSegment) === 1;
+    }
+
+    /**
+     * Determine if the request is a hook request.
+     *
+     * @return bool True if the request is a hook request, false otherwise.
+     */
+    public static function isHook(): bool
+    {
+        return request()?->is('hooks/*') ?? false;
+    }
+
+    /**
+     * Determine if the request is an IoT request.
+     *
+     * @return bool True if the request is an IoT request, false otherwise.
+     */
+    public static function isIoT(): bool
+    {
+        return request()?->is('iot/*') ?? false;
+    }
+
+    /**
+     * Determines if the given string is a valid expression.
+     *
+     * @param string $expression The string to evaluate.
+     * @return bool True if the string is a valid expression, false otherwise.
+     */
+    public static function isExpression(string $expression): bool
+    {
+        return request()?->is($expression) ?? false;
+    }
+
+    /**
+     * Determine if the request expects a JSON response.
+     *
+     * @return bool True if the request expects JSON, false otherwise.
+     */
+    public static function wantsJson(): bool
+    {
+        return self::isAPI() ||
+            self::isHook() ||
+            self::isIoT() ||
+            (request()?->wantsJson());
+    }
+
+    /**
+     * Get the current request method.
+     *
+     * @return string|null The HTTP method (GET, POST, etc.) or null if no request.
+     */
+    public static function getMethod(): ?string
+    {
+        return request()?->method();
+    }
+
+    /**
+     * Check if the current request is a specific HTTP method.
+     *
+     * @param string $method The HTTP method to check (GET, POST, PUT, DELETE, etc.).
+     * @return bool True if the request method matches, false otherwise.
+     */
+    public static function isMethod(string $method): bool
+    {
+        return request()?->isMethod($method) ?? false;
+    }
+
+    /**
+     * Get the current route name.
+     *
+     * @return string|null The route name or null if not available.
+     */
+    public static function getRouteName(): ?string
+    {
+        return request()?->route()?->getName();
+    }
+
+    /**
+     * Check if the current route has a specific name.
+     *
+     * @param string $name The route name to check.
+     * @return bool True if the route name matches, false otherwise.
+     */
+    public static function isRouteName(string $name): bool
+    {
+        return self::getRouteName() === $name;
     }
 }
