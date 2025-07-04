@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Closure;
 
 //This middleware forces the response to be an API response
-class ForceApiResponse
+class ForceJsonResponse
 {
     public function handle(Request $request, Closure $next): Response
     {
