@@ -94,7 +94,7 @@ class RouteHelper
         return self::isAPI() ||
             self::isHook() ||
             self::isIoT() ||
-            (request()?->wantsJson());
+            request()?->expectsJson();
     }
 
     /**
