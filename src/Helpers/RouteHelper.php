@@ -36,6 +36,7 @@ class RouteHelper
         return !(self::isAPI() || self::isHook() || self::isIoT() || self::isConsole());
     }
 
+
     /**
      * Determine if the request is an API request.
      *
@@ -136,5 +137,16 @@ class RouteHelper
     public static function isRouteName(string $name): bool
     {
         return self::getRouteName() === $name;
+    }
+
+    /**
+     * Checks if the current route name contains the specified string.
+     *
+     * @param string $name The string to search for in the current route name.
+     * @return bool Returns true if the current route name contains the specified string, false otherwise.
+     */
+    public static function routeContains(string $name): bool
+    {
+        return str_contains(self::getRouteName() ?? '', $name);
     }
 }

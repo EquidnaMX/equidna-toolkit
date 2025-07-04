@@ -62,7 +62,7 @@ class ResponseHelper
                 'status'  => $status,
                 'message' => $message,
                 'errors'  => $errors,
-                'data' => $data
+                'data'    => $data
             ]
         )->withErrors($errors)
             ->withInput();
