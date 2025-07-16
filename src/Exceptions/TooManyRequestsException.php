@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.0
+ * @version 0.6.1
  *
  * Exception for HTTP 429 Too Many Requests responses.
  */
@@ -17,12 +17,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Equidna\Toolkit\Helpers\ResponseHelper;
 use Exception;
+use Throwable;
 
 class TooManyRequestsException extends Exception
 {
-    public function __construct(string $message = 'Too Many Requests', int $code = 429)
+    public function __construct(string $message = 'Too Many Requests', ?Throwable $previous = null)
     {
-        parent::__construct($message, $code);
+        parent::__construct($message, 429, $previous);
     }
 
     public function report(): void

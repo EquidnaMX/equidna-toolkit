@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.0
+ * @version 0.6.1
  *
  * Exception for HTTP 401 Unauthorized responses.
  */
@@ -17,12 +17,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Equidna\Toolkit\Helpers\ResponseHelper;
 use Exception;
+use Throwable;
 
 class UnauthorizedException extends Exception
 {
-    public function __construct(string $message = 'Unauthorized', int $code = 401)
+    public function __construct(string $message = 'Unauthorized', ?Throwable $previous = null)
     {
-        parent::__construct($message, $code);
+        parent::__construct($message, 401, $previous);
     }
 
     public function report(): void

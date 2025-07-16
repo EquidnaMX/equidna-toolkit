@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.0
+ * @version 0.6.1
  *
  * Exception for HTTP 403 Forbidden responses.
  */
@@ -17,12 +17,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Equidna\Toolkit\Helpers\ResponseHelper;
 use Exception;
+use Throwable;
 
 class ForbiddenException extends Exception
 {
-    public function __construct(string $message = 'Forbidden', int $code = 403)
+    public function __construct(string $message = 'Forbidden', ?Throwable $previous = null)
     {
-        parent::__construct($message, $code);
+        parent::__construct($message, 403, $previous);
     }
 
     public function report(): void

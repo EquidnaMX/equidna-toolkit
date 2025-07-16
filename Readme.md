@@ -1,8 +1,8 @@
-# Equidna Toolkit
+# Equidna Toolkit v0.6.1
 
 ---
 
-Equidna Toolkit is a Laravel package providing Helpers, Traits, Middleware, and Service Providers to streamline modular application development.
+Equidna Toolkit is a Laravel package (v0.6.1) providing Helpers, Traits, Middleware, and Service Providers to streamline modular application development. Now supports Laravel 11 and 12.
 
 ---
 
@@ -20,7 +20,7 @@ Prevents the current request from being stored in the session as the current URL
 
 ### HasCompositePrimaryKey
 
-**Namespace:** `Equidna\Toolkit\Traits\Database`
+**Namespace:** `Equidna\\Toolkit\\Traits\\Database`
 
 Enables Eloquent models to support composite primary keys.
 **Usage Example:**
@@ -98,6 +98,16 @@ PaginatorHelper::appendCleanedRequest(LengthAwarePaginator $paginator, Request $
 PaginatorHelper::setFullURL(LengthAwarePaginator $paginator): void
 ```
 
+**Trait Usage Example:**
+
+```php
+// In your Eloquent model
+use Equidna\Toolkit\Traits\Database\Paginator;
+
+// Usage in a query scope
+$results = $this->scopePaginator($data, $page, $items_per_page, $set_full_url, $transformation);
+```
+
 Pagination length is set via config:
 `config/equidna.php`
 
@@ -123,7 +133,7 @@ Registers and publishes package config, and binds custom exception handlers for 
 
 ## Exception Classes
 
-Custom exceptions for each error response, with integrated logging and rendering:
+Custom exceptions for each error response, with integrated logging and rendering. All exceptions now accept an optional `?Throwable $previous = null` as the second constructor argument:
 
 - `BadRequestException`
 - `UnauthorizedException`
@@ -133,6 +143,12 @@ Custom exceptions for each error response, with integrated logging and rendering
 - `ConflictException`
 - `UnprocessableEntityException`
 - `TooManyRequestsException`
+
+**Example:**
+
+```php
+throw new BadRequestException('Invalid input', $previousException);
+```
 
 Each exception logs the error and returns the appropriate response via `ResponseHelper`.
 
@@ -155,6 +171,6 @@ Example:
   ]
   ```
 - Publish config:
-  ```
+  ```sh
   php artisan vendor:publish --tag=equidna:config
   ```

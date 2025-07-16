@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.0
+ * @version 0.6.1
  *
  * Provides static utility methods for pagination.
  * This helper class is designed to assist with paginating data

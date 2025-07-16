@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.0
+ * @version 0.6.1
  *
  * Exception for HTTP 404 Not Found responses.
  */
@@ -17,12 +17,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Equidna\Toolkit\Helpers\ResponseHelper;
 use Exception;
+use Throwable;
 
 class NotFoundException extends Exception
 {
-    public function __construct(string $message = 'Not Found', int $code = 404)
+    public function __construct(string $message = 'Not Found', ?Throwable $previous = null)
     {
-        parent::__construct($message, $code);
+        parent::__construct($message, 404, $previous);
     }
 
     public function report(): void
