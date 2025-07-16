@@ -3,7 +3,7 @@
 /**
  * @author Gabriel Ruelas
  * @license MIT
- * @version 1.2.1
+ * @version 0.6.0
  *
  */
 

@@ -1,10 +1,13 @@
 <?php
 
 /**
+ * RouteHelper
+ *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 1.2.1
+ * @version 0.6.0
  *
+ * Provides static utility methods for request type detection and routing logic in Laravel applications.
  */
 
 namespace Equidna\Toolkit\Helpers;

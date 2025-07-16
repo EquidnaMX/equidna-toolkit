@@ -9,9 +9,10 @@
 
 namespace Equidna\Toolkit\Traits\Database;
 
-use Equidna\Toolkit\Helpers\RouteHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Equidna\Toolkit\Helpers\RouteHelper;
+use Equidna\Toolkit\Helpers\PaginatorHelper;
 
 trait Paginator
 {
@@ -28,19 +29,19 @@ trait Paginator
      */
     public function scopePaginator(
         Builder $query,
+        ?int $page = null,
         string $pageName = 'page',
-        null|int $page = 1,
-        null|int $perPage = null,
+        ?int $items_per_page = null,
+        bool $set_full_url = false,
         null|callable $transformation = null
     ): LengthAwarePaginator|array {
 
-        $perPage = $perPage ?? config('equidna.paginator.page_items');
-
+        $paginationLength = $items_per_page ?: config('equidna.paginator.page_items');
         $paginator = $query->paginate(
-            $perPage,
+            $paginationLength,
             ['*'],
             $pageName,
-            $page ?? config('apollo.page')
+            $page ?: 1
         );
 
         if (!is_null($transformation)) {
@@ -50,11 +51,15 @@ trait Paginator
             tap($paginator, fn(LengthAwarePaginator $paginator) => $paginator->through($transformation));
         }
 
-        if (RouteHelper::isAPI()) {
+        if ($set_full_url) {
+            PaginatorHelper::setFullURL($paginator);
+        }
+
+        if (RouteHelper::wantsJson()) {
             return [
-                'data' => $paginator->items(),
+                'data'         => $paginator->items(),
                 'current_page' => $paginator->currentPage(),
-                'last_page' => $paginator->lastPage(),
+                'last_page'    => $paginator->lastPage(),
             ];
         }
 

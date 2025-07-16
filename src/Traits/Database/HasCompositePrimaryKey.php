@@ -1,10 +1,13 @@
 <?php
 
 /**
+ * HasCompositePrimaryKey Trait
+ *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 1.0.0
+ * @version 0.6.0
  *
+ * Enables Eloquent models to support composite primary keys.
  */
 
 namespace Equidna\Toolkit\Traits\Database;
