@@ -54,7 +54,7 @@ class ResponseHelper
         }
 
         return redirect(
-            to: $forward_url ?? request()->previous(),
+            to: $forward_url ?? url()->previous(),
             headers: $headers
         )->with(
             [
