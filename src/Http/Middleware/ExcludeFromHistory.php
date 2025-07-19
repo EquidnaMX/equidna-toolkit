@@ -23,6 +23,13 @@ class ExcludeFromHistory
      * @param Closure $next The next middleware in the pipeline.
      * @return mixed The response from the next middleware.
      */
+    /**
+     * Handle an incoming request and exclude it from session history.
+     *
+     * @param Request $request The incoming HTTP request.
+     * @param Closure $next The next middleware in the pipeline.
+     * @return mixed The response from the next middleware.
+     */
     public function handle(Request $request, Closure $next): mixed
     {
         try {

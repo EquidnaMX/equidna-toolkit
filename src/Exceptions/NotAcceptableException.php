@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.1
+ * @version 0.6.2
  *
  * Exception for HTTP 406 Not Acceptable responses.
  */
@@ -21,11 +21,22 @@ use Throwable;
 
 class NotAcceptableException extends Exception
 {
+    /**
+     * NotAcceptableException constructor.
+     *
+     * @param string $message Exception message (default: 'Not Acceptable').
+     * @param Throwable|null $previous Previous exception for chaining.
+     */
     public function __construct(string $message = 'Not Acceptable', ?Throwable $previous = null)
     {
         parent::__construct($message, 406, $previous);
     }
 
+    /**
+     * Report the exception to the log.
+     *
+     * @return void
+     */
     public function report(): void
     {
         Log::error('NotAcceptableException: ' . $this->getMessage(), [
@@ -35,8 +46,13 @@ class NotAcceptableException extends Exception
         ]);
     }
 
+    /**
+     * Render the exception into an HTTP response.
+     *
+     * @return RedirectResponse|JsonResponse
+     */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::notAcceptable(message: $this->message, errors: ['DEACTIVATED']);
+        return ResponseHelper::notAcceptable(message: $this->message);
     }
 }

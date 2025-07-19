@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.1
+ * @version 0.6.2
  *
  * Exception for HTTP 403 Forbidden responses.
  */
@@ -21,11 +21,22 @@ use Throwable;
 
 class ForbiddenException extends Exception
 {
+    /**
+     * ForbiddenException constructor.
+     *
+     * @param string $message Exception message (default: 'Forbidden').
+     * @param Throwable|null $previous Previous exception for chaining.
+     */
     public function __construct(string $message = 'Forbidden', ?Throwable $previous = null)
     {
         parent::__construct($message, 403, $previous);
     }
 
+    /**
+     * Report the exception to the log.
+     *
+     * @return void
+     */
     public function report(): void
     {
         Log::error('ForbiddenException: ' . $this->getMessage(), [
@@ -35,8 +46,13 @@ class ForbiddenException extends Exception
         ]);
     }
 
+    /**
+     * Render the exception into an HTTP response.
+     *
+     * @return RedirectResponse|JsonResponse
+     */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::forbidden(message: $this->message, errors: ['DEACTIVATED']);
+        return ResponseHelper::forbidden(message: $this->message);
     }
 }

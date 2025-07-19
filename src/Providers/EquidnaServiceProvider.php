@@ -3,7 +3,7 @@
 /*
 @author Gabriel Ruelas
 @licence MIT
-@version 0.6.1
+@version 0.6.2
 
 */
 
@@ -13,11 +13,21 @@ use Illuminate\Support\ServiceProvider;
 
 class EquidnaServiceProvider extends ServiceProvider
 {
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
     public function register(): void
     {
         $this->registerConfig();
     }
 
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot(): void
     {
         // Load routes
@@ -27,6 +37,11 @@ class EquidnaServiceProvider extends ServiceProvider
         $this->registerExceptionHandlers();
     }
 
+    /**
+     * Register custom exception handlers for the package.
+     *
+     * @return void
+     */
     protected function registerExceptionHandlers(): void
     {
         $exceptions = [
@@ -47,11 +62,21 @@ class EquidnaServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * Merge package configuration with the application's config.
+     *
+     * @return void
+     */
     protected function registerConfig(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/equidna.php', 'equidna');
     }
 
+    /**
+     * Publish the package configuration file to the application's config path.
+     *
+     * @return void
+     */
     protected function publishConfig(): void
     {
         $this->publishes([

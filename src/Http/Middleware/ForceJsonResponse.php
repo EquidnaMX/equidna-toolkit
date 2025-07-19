@@ -16,6 +16,13 @@ use Closure;
 //This middleware forces the response to be an API response
 class ForceJsonResponse
 {
+    /**
+     * Handle an incoming request and force the Accept header to application/json.
+     *
+     * @param Request $request The incoming HTTP request.
+     * @param Closure $next The next middleware in the pipeline.
+     * @return Response The response from the next middleware.
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $request->headers->set('Accept', 'application/json');

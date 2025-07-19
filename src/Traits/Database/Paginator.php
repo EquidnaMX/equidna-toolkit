@@ -27,6 +27,17 @@ trait Paginator
      *
      * @return LengthAwarePaginator|array The paginated result, either as a LengthAwarePaginator instance or an array if the request is an API call.
      */
+    /**
+     * Scope a query for pagination with optional transformation.
+     *
+     * @param Builder $query The query builder instance.
+     * @param int|null $page The current page number. Default is 1.
+     * @param string $pageName The name of the pagination parameter. Default is 'page'.
+     * @param int|null $items_per_page The number of items per page. Default is null, which uses the configuration value.
+     * @param bool $set_full_url Whether to set the paginator path to the current URL.
+     * @param callable|null $transformation Optional transformation callback for paginator items.
+     * @return LengthAwarePaginator|array The paginated result, either as a LengthAwarePaginator or an array for API calls.
+     */
     public function scopePaginator(
         Builder $query,
         ?int $page = null,

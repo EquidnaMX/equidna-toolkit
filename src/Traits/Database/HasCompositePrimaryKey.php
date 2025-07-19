@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.1
+ * @version 0.6.2
  *
  * Enables Eloquent models to support composite primary keys.
  */

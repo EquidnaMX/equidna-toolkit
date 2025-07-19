@@ -1,8 +1,8 @@
-# Equidna Toolkit v0.6.1
+# Equidna Toolkit v0.6.2
 
 ---
 
-Equidna Toolkit is a Laravel package (v0.6.1) providing Helpers, Traits, Middleware, and Service Providers to streamline modular application development. Now supports Laravel 11 and 12.
+Equidna Toolkit is a Laravel package (v0.6.2) providing Helpers, Traits, Middleware, and Service Providers to streamline modular application development. Now supports Laravel 11 and 12.
 
 ---
 

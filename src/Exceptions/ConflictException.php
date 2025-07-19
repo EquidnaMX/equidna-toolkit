@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.1
+ * @version 0.6.2
  *
  * Exception for HTTP 409 Conflict responses.
  */
@@ -21,11 +21,22 @@ use Throwable;
 
 class ConflictException extends Exception
 {
+    /**
+     * ConflictException constructor.
+     *
+     * @param string $message Exception message (default: 'Conflict').
+     * @param Throwable|null $previous Previous exception for chaining.
+     */
     public function __construct(string $message = 'Conflict', ?Throwable $previous = null)
     {
         parent::__construct($message, 409, $previous);
     }
 
+    /**
+     * Report the exception to the log.
+     *
+     * @return void
+     */
     public function report(): void
     {
         Log::error('ConflictException: ' . $this->getMessage(), [
@@ -35,8 +46,13 @@ class ConflictException extends Exception
         ]);
     }
 
+    /**
+     * Render the exception into an HTTP response.
+     *
+     * @return RedirectResponse|JsonResponse
+     */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::conflict(message: $this->message, errors: ['DEACTIVATED']);
+        return ResponseHelper::conflict(message: $this->message);
     }
 }

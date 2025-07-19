@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.1
+ * @version 0.6.2
  *
  * Exception for HTTP 404 Not Found responses.
  */
@@ -21,11 +21,22 @@ use Throwable;
 
 class NotFoundException extends Exception
 {
+    /**
+     * NotFoundException constructor.
+     *
+     * @param string $message Exception message (default: 'Not Found').
+     * @param Throwable|null $previous Previous exception for chaining.
+     */
     public function __construct(string $message = 'Not Found', ?Throwable $previous = null)
     {
         parent::__construct($message, 404, $previous);
     }
 
+    /**
+     * Report the exception to the log.
+     *
+     * @return void
+     */
     public function report(): void
     {
         Log::error('NotFoundException: ' . $this->getMessage(), [
@@ -35,8 +46,13 @@ class NotFoundException extends Exception
         ]);
     }
 
+    /**
+     * Render the exception into an HTTP response.
+     *
+     * @return RedirectResponse|JsonResponse
+     */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::notFound(message: $this->message, errors: ['DEACTIVATED']);
+        return ResponseHelper::notFound(message: $this->message);
     }
 }
