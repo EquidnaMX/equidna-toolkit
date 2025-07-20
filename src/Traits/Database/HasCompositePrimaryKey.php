@@ -5,7 +5,7 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.2
+ * @version 0.6.3
  *
  * Enables Eloquent models to support composite primary keys.
  */
@@ -19,7 +19,7 @@ trait HasCompositePrimaryKey
     /**
      * Set the keys for a save update query.
      *
-     * @param mixed $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function setKeysForSaveQuery(mixed $query): Builder
@@ -39,7 +39,7 @@ trait HasCompositePrimaryKey
     /**
      * Get the primary key value for a save query.
      *
-     * @param mixed $keyName
+     * @param string|null $keyName
      * @return mixed
      */
     protected function getKeyForSaveQuery(mixed $keyName = null): mixed

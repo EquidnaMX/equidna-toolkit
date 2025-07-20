@@ -1,13 +1,11 @@
 <?php
 
 /**
- * UnprocessableEntityException
+ * Exception for HTTP 422 Unprocessable Entity responses (422 Unprocessable Entity).
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.2
- *
- * Exception for HTTP 422 Unprocessable Entity responses.
+ * @version 0.6.3
  */
 
 namespace Equidna\Toolkit\Exceptions;
@@ -26,8 +24,9 @@ class UnprocessableEntityException extends Exception
      *
      * @param string $message Exception message (default: 'Unprocessable Entity').
      * @param Throwable|null $previous Previous exception for chaining.
+     * @param array $errors Optional array of error details.
      */
-    public function __construct(string $message = 'Unprocessable Entity', ?Throwable $previous = null)
+    public function __construct(string $message = 'Unprocessable Entity', ?Throwable $previous = null, private array $errors = [])
     {
         parent::__construct($message, 422, $previous);
     }
@@ -42,7 +41,8 @@ class UnprocessableEntityException extends Exception
         Log::error('UnprocessableEntityException: ' . $this->getMessage(), [
             'code' => $this->getCode(),
             'file' => $this->getFile(),
-            'line' => $this->getLine()
+            'line' => $this->getLine(),
+            'errors' => $this->errors
         ]);
     }
 
@@ -53,6 +53,6 @@ class UnprocessableEntityException extends Exception
      */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::unprocessableEntity(message: $this->message);
+        return ResponseHelper::unprocessableEntity(message: $this->message, errors: $this->errors);
     }
 }

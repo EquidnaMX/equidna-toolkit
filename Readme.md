@@ -1,4 +1,4 @@
-# Equidna Toolkit v0.6.2
+# Equidna Toolkit v0.6.3
 
 ---
 
@@ -47,8 +47,14 @@ RouteHelper::isWeb()
 RouteHelper::isApi()
 RouteHelper::isHook()
 RouteHelper::isIoT()
-RouteHelper::isExpression()
+RouteHelper::isExpression(string $expression)
 RouteHelper::isConsole()
+RouteHelper::wantsJson()
+RouteHelper::getMethod()
+RouteHelper::isMethod(string $method)
+RouteHelper::getRouteName()
+RouteHelper::isRouteName(string $name)
+RouteHelper::routeContains(string $name)
 ```
 
 ---
@@ -63,16 +69,16 @@ Returns a `RedirectResponse` for web requests or a JSON response for API request
 **Error Responses:**
 
 ```php
-ResponseHelper::badRequest(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::unauthorized(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::forbidden(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::notFound(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::notAcceptable(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::conflict(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::unprocessableEntity(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::tooManyRequests(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::error(string $message, array $errors = [], string $forward_url = null)
-ResponseHelper::handleException(Exception $exception, array $errors = [], string $forward_url = null)
+ResponseHelper::badRequest(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::unauthorized(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::forbidden(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::notFound(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::notAcceptable(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::conflict(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::unprocessableEntity(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::tooManyRequests(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::error(string $message, array $errors = [], array $headers = [], string $forward_url = null)
+ResponseHelper::handleException(Exception $exception, array $errors = [], array $headers = [], string $forward_url = null)
 ```
 
 **Success Responses:**
@@ -105,7 +111,7 @@ PaginatorHelper::setFullURL(LengthAwarePaginator $paginator): void
 use Equidna\Toolkit\Traits\Database\Paginator;
 
 // Usage in a query scope
-$results = $this->scopePaginator($data, $page, $items_per_page, $set_full_url, $transformation);
+$results = $this->scopePaginator($query, $page, $pageName, $items_per_page, $set_full_url, $transformation);
 ```
 
 Pagination length is set via config:
@@ -133,7 +139,13 @@ Registers and publishes package config, and binds custom exception handlers for 
 
 ## Exception Classes
 
-Custom exceptions for each error response, with integrated logging and rendering. All exceptions now accept an optional `?Throwable $previous = null` as the second constructor argument:
+Custom exceptions for each error response, with integrated logging and rendering. All exceptions share the following constructor signature:
+
+```php
+__construct(string $message = '...', ?Throwable $previous = null, array $errors = [])
+```
+
+Available exceptions:
 
 - `BadRequestException`
 - `UnauthorizedException`
@@ -147,10 +159,10 @@ Custom exceptions for each error response, with integrated logging and rendering
 **Example:**
 
 ```php
-throw new BadRequestException('Invalid input', $previousException);
+throw new BadRequestException('Invalid input', $previousException, ['field' => 'error']);
 ```
 
-Each exception logs the error and returns the appropriate response via `ResponseHelper`.
+Each exception logs the error and returns the appropriate response via `ResponseHelper`. The `$errors` array is optional and can be used to provide additional error details.
 
 ---
 

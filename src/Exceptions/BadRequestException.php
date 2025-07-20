@@ -1,13 +1,11 @@
 <?php
 
 /**
- * BadRequestException
+ * Exception for HTTP 400 Bad Request responses (400 Bad Request).
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.2
- *
- * Exception for HTTP 400 Bad Request responses.
+ * @version 0.6.3
  */
 
 namespace Equidna\Toolkit\Exceptions;
@@ -26,8 +24,9 @@ class BadRequestException extends Exception
      *
      * @param string $message Exception message (default: 'Bad Request').
      * @param Throwable|null $previous Previous exception for chaining.
+     * @param array $errors Optional array of error details.
      */
-    public function __construct(string $message = 'Bad Request', ?Throwable $previous = null)
+    public function __construct(string $message = 'Bad Request', ?Throwable $previous = null, private array $errors = [])
     {
         parent::__construct($message, 400, $previous);
     }
@@ -42,7 +41,8 @@ class BadRequestException extends Exception
         Log::error('BadRequestException: ' . $this->getMessage(), [
             'code' => $this->getCode(),
             'file' => $this->getFile(),
-            'line' => $this->getLine()
+            'line' => $this->getLine(),
+            'errors' => $this->errors
         ]);
     }
 
@@ -53,6 +53,6 @@ class BadRequestException extends Exception
      */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::badRequest(message: $this->message);
+        return ResponseHelper::badRequest(message: $this->message, errors: $this->errors);
     }
 }

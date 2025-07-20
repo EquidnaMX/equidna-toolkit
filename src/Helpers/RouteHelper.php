@@ -5,12 +5,14 @@
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.2
+ * @version 0.6.3
  *
  * Provides static utility methods for request type detection and routing logic in Laravel applications.
  */
 
 namespace Equidna\Toolkit\Helpers;
+
+use Exception;
 
 class RouteHelper
 {
@@ -23,7 +25,7 @@ class RouteHelper
     {
         try {
             return app()->runningInConsole();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Fallback for cases where app() is not available
             return php_sapi_name() === 'cli';
         }
@@ -36,7 +38,7 @@ class RouteHelper
      */
     public static function isWeb(): bool
     {
-        return !(self::isAPI() || self::isHook() || self::isIoT() || self::isConsole());
+        return !(self::isApi() || self::isHook() || self::isIoT() || self::isConsole());
     }
 
 
@@ -45,7 +47,7 @@ class RouteHelper
      *
      * @return bool True if the request is an API request, false otherwise.
      */
-    public static function isAPI(): bool
+    public static function isApi(): bool
     {
         $firstSegment = request()?->segment(1);
 
@@ -76,6 +78,7 @@ class RouteHelper
         return request()?->is('iot/*') ?? false;
     }
 
+
     /**
      * Determines if the given string is a valid expression.
      *
@@ -94,7 +97,7 @@ class RouteHelper
      */
     public static function wantsJson(): bool
     {
-        return self::isAPI() ||
+        return self::isApi() ||
             self::isHook() ||
             self::isIoT() ||
             request()?->expectsJson();

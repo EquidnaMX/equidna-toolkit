@@ -1,13 +1,11 @@
 <?php
 
 /**
- * UnauthorizedException
+ * Exception for HTTP 401 Unauthorized responses (401 Unauthorized).
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.2
- *
- * Exception for HTTP 401 Unauthorized responses.
+ * @version 0.6.3
  */
 
 namespace Equidna\Toolkit\Exceptions;
@@ -26,8 +24,9 @@ class UnauthorizedException extends Exception
      *
      * @param string $message Exception message (default: 'Unauthorized').
      * @param Throwable|null $previous Previous exception for chaining.
+     * @param array $errors Optional array of error details.
      */
-    public function __construct(string $message = 'Unauthorized', ?Throwable $previous = null)
+    public function __construct(string $message = 'Unauthorized', ?Throwable $previous = null, private array $errors = [])
     {
         parent::__construct($message, 401, $previous);
     }
@@ -42,7 +41,8 @@ class UnauthorizedException extends Exception
         Log::error('UnauthorizedException: ' . $this->getMessage(), [
             'code' => $this->getCode(),
             'file' => $this->getFile(),
-            'line' => $this->getLine()
+            'line' => $this->getLine(),
+            'errors' => $this->errors
         ]);
     }
 
@@ -53,6 +53,6 @@ class UnauthorizedException extends Exception
      */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::unauthorized(message: $this->message);
+        return ResponseHelper::unauthorized(message: $this->message, errors: $this->errors);
     }
 }

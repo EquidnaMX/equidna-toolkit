@@ -1,13 +1,11 @@
 <?php
 
 /**
- * ConflictException
+ * Exception for HTTP 409 Conflict responses (409 Conflict).
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.2
- *
- * Exception for HTTP 409 Conflict responses.
+ * @version 0.6.3
  */
 
 namespace Equidna\Toolkit\Exceptions;
@@ -26,8 +24,9 @@ class ConflictException extends Exception
      *
      * @param string $message Exception message (default: 'Conflict').
      * @param Throwable|null $previous Previous exception for chaining.
+     * @param array $errors Optional array of error details.
      */
-    public function __construct(string $message = 'Conflict', ?Throwable $previous = null)
+    public function __construct(string $message = 'Conflict', ?Throwable $previous = null, private array $errors = [])
     {
         parent::__construct($message, 409, $previous);
     }
@@ -42,7 +41,8 @@ class ConflictException extends Exception
         Log::error('ConflictException: ' . $this->getMessage(), [
             'code' => $this->getCode(),
             'file' => $this->getFile(),
-            'line' => $this->getLine()
+            'line' => $this->getLine(),
+            'errors' => $this->errors
         ]);
     }
 
@@ -53,6 +53,6 @@ class ConflictException extends Exception
      */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::conflict(message: $this->message);
+        return ResponseHelper::conflict(message: $this->message, errors: $this->errors);
     }
 }

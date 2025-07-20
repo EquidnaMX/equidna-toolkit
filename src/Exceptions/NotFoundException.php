@@ -1,13 +1,11 @@
 <?php
 
 /**
- * NotFoundException
+ * Exception for HTTP 404 Not Found responses (404 Not Found).
  *
  * @author Gabriel Ruelas
  * @license MIT
- * @version 0.6.2
- *
- * Exception for HTTP 404 Not Found responses.
+ * @version 0.6.3
  */
 
 namespace Equidna\Toolkit\Exceptions;
@@ -26,8 +24,9 @@ class NotFoundException extends Exception
      *
      * @param string $message Exception message (default: 'Not Found').
      * @param Throwable|null $previous Previous exception for chaining.
+     * @param array $errors Optional array of error details.
      */
-    public function __construct(string $message = 'Not Found', ?Throwable $previous = null)
+    public function __construct(string $message = 'Not Found', ?Throwable $previous = null, private array $errors = [])
     {
         parent::__construct($message, 404, $previous);
     }
@@ -42,7 +41,8 @@ class NotFoundException extends Exception
         Log::error('NotFoundException: ' . $this->getMessage(), [
             'code' => $this->getCode(),
             'file' => $this->getFile(),
-            'line' => $this->getLine()
+            'line' => $this->getLine(),
+            'errors' => $this->errors
         ]);
     }
 
@@ -53,6 +53,6 @@ class NotFoundException extends Exception
      */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::notFound(message: $this->message);
+        return ResponseHelper::notFound(message: $this->message, errors: $this->errors);
     }
 }
