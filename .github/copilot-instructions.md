@@ -2,69 +2,111 @@
 
 ## Project Overview
 
-- **equidna-toolkit** is a Laravel-based PHP package providing helpers, middleware, traits, and service providers for modular application development.
-- Major components are organized under `src/`:
-  - `Helpers/`: Utility classes for routing, pagination, responses, etc.
-  - `Http/Middleware/`: Custom middleware for request/session handling.
-  - `Providers/`: Service providers for package configuration and bootstrapping.
-  - `Traits/Database/`: Eloquent ORM extensions (e.g., composite primary key support).
-  - `config/`: Package configuration file (`equidna.php`).
+**equidna-toolkit** is a Laravel PHP package (v0.6.3) providing utilities for multi-context application development. It intelligently handles different request types (web, API, hooks, IoT) and provides unified response patterns across contexts.
 
-## Key Architectural Patterns
+**Core Architecture:**
 
-- **Service Provider** (`EquidnaServiceProvider`):
-  - Registers and publishes config via Laravel conventions.
-  - See `src/Providers/EquidnaServiceProvider.php` for merge/publish logic.
-- **Middleware**:
-  - Custom middleware (e.g., `ExcludeFromHistory`) manipulates session/request state.
-  - Middleware should be registered in the host Laravel app's `Kernel.php`.
-- **Helpers**:
-  - Static utility classes (e.g., `RouteHelper`) encapsulate request type detection and routing logic.
-  - Use null-safe operators and fallback logic for robust request handling.
-- **Traits**:
-  - `HasCompositePrimaryKey` enables Eloquent models to support composite keys. Override `getKeyName()` to return an array of key names in your model.
+- `Helpers/`: Context-aware utilities with null-safe fallback patterns
+- `Http/Middleware/`: Session and response manipulation middleware
+- `Exceptions/`: Custom HTTP exceptions with automatic Laravel binding
+- `Traits/Database/`: Eloquent extensions for composite keys
+- `Providers/`: Auto-discovery service provider with config publishing
 
-## Developer Workflows
+## Critical Patterns
 
-- **Build/Install**:
-  - Use Composer for dependency management: `composer install` or `composer update`.
-- **Testing**:
-  - No test directory detected; add tests under `tests/` using PHPUnit if needed.
-- **Debugging**:
-  - Use Laravel's built-in logging and exception handling. Middleware and helpers use try/catch for fallback logic.
+### Multi-Context Request Handling
 
-## Project-Specific Conventions
+The package's core philosophy centers on `RouteHelper::wantsJson()` which determines response format:
 
-- **Config Pathing**:
-  - All config files referenced relative to provider directory (e.g., `__DIR__ . '/../config/equidna.php'`).
-- **Session Manipulation**:
-  - Middleware may directly modify session keys (e.g., `forget('_previous')`).
-- **Composite Key Models**:
-  - Models using `HasCompositePrimaryKey` must override `getKeyName()` to return an array.
+- API routes (`/api/*`, `/*-api/*`) → JSON responses
+- Hook routes (`/hooks/*`) → JSON responses
+- IoT routes (`/iot/*`) → JSON responses
+- Web routes → Redirects with session flash data
+- Console → Plain text messages
+
+Example usage in `ResponseHelper::generateResponse()`:
+
+```php
+if (RouteHelper::wantsJson()) {
+    return self::generateJsonResponse($status, $message, $errors, $data);
+}
+return redirect()->with(['status' => $status, 'message' => $message]);
+```
+
+### Defensive Programming Pattern
+
+All helpers use null-safe operators and fallback logic for Laravel context availability:
+
+```php
+public static function isApi(): bool {
+    $firstSegment = request()?->segment(1);
+    if (is_null($firstSegment)) return false;
+    return preg_match('/^(api|.*-api|api-.*)$/i', $firstSegment) === 1;
+}
+```
+
+### Exception Architecture
+
+Custom exceptions auto-register in service container and provide context-aware responses:
+
+- Each exception (404, 401, 422, etc.) has dedicated class in `src/Exceptions/`
+- Service provider binds all exceptions automatically via reflection
+- Exceptions inherit Laravel's `report()` and `render()` methods for logging
+
+## Development Workflows
+
+**Package Installation:**
+
+```bash
+composer require equidna/toolkit
+# Auto-discovery registers EquidnaServiceProvider
+php artisan vendor:publish --tag=equidna:config
+```
+
+**Code Quality:**
+
+- Uses PHPStan for static analysis: `vendor/bin/phpstan analyse`
+- PSR-12 coding standard with 250-char line limit (see `ruleset.xml`)
+- PHP 8.0+ requirement with null-safe operators throughout
+
+**No Testing Infrastructure:** Package lacks tests - consider this when making changes.
+
+## Package-Specific Conventions
+
+### Config Management
+
+Config published from `src/config/equidna.php` with relative pathing:
+
+```php
+$this->mergeConfigFrom(__DIR__ . '/../config/equidna.php', 'equidna');
+```
+
+### Middleware Registration Pattern
+
+Middleware designed for manual registration in host app's `Kernel.php`:
+
+```php
+protected $middlewareGroups = [
+    'web' => [
+        \Equidna\Toolkit\Http\Middleware\ExcludeFromHistory::class,
+    ]
+];
+```
+
+### Composite Primary Keys
+
+Models using `HasCompositePrimaryKey` **must** override `getKeyName()`:
+
+```php
+class UserRole extends Model {
+    use HasCompositePrimaryKey;
+    public function getKeyName() { return ['user_id', 'role_id']; }
+}
+```
 
 ## Integration Points
 
-- **Laravel Framework**:
-  - Relies on Laravel's service provider, middleware, and Eloquent ORM systems.
-  - External dependencies managed via Composer (`composer.json`).
-- **No custom build scripts or test runners detected.**
-
-## Examples
-
-- Register service provider in `config/app.php`:
-  ```php
-  'providers' => [
-      Equidna\Toolkit\Providers\EquidnaServiceProvider::class,
-  ]
-  ```
-- Example composite key model:
-  ```php
-  class MyModel extends Model {
-      use HasCompositePrimaryKey;
-      public function getKeyName() { return ['key1', 'key2']; }
-  }
-  ```
-
----
-
-If any conventions or workflows are unclear, please provide feedback so this guide can be improved.
+- **Laravel Framework**: Requires illuminate/support ^11.21|^12.0 as dev dependency
+- **Auto-Discovery**: Package auto-registers via composer.json `extra.laravel.providers`
+- **Config Publishing**: Uses Laravel's standard `vendor:publish` command
+- **Exception Handling**: Integrates with Laravel's exception handling pipeline
