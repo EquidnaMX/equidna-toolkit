@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Closure;
 
 //This middleware forces the response to be an API response
-// DEPRECATED: Use ForceJsonResponse instead 
+// DEPRECATED: Use ForceJsonResponse instead
 class ForceApiResponse
 {
     /**
