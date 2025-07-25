@@ -1,13 +1,3 @@
-# Equidna Toolkit <sup>v0.6.3</sup>
-
----
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/EquidnaMX/equidna-toolkit/master/.github/equidna-logo.png" alt="Equidna Toolkit Logo" width="120"/>
-</p>
-
----
-
 # Equidna Toolkit v0.6.4
 
 > **A modern Laravel package for multi-context, modular application development.**
