@@ -26,7 +26,7 @@ class ForbiddenException extends Exception
      * @param Throwable|null $previous Previous exception for chaining.
      * @param array $errors Optional array of error details.
      */
-    public function __construct(string $message = 'Forbidden', ?Throwable $previous = null, private array $errors = [])
+    public function __construct(string $message = 'Forbidden', ?Throwable $previous = null, private ?array $errors = null)
     {
         parent::__construct($message, 403, $previous);
     }
@@ -53,6 +53,9 @@ class ForbiddenException extends Exception
      */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::forbidden(message: $this->message, errors: $this->errors);
+        return ResponseHelper::forbidden(
+            message: $this->message,
+            errors: $this->errors ?? [$this->message],
+        );
     }
 }

@@ -26,7 +26,7 @@ class TooManyRequestsException extends Exception
      * @param Throwable|null $previous Previous exception for chaining.
      * @param array $errors Optional array of error details.
      */
-    public function __construct(string $message = 'Too Many Requests', ?Throwable $previous = null, private array $errors = [])
+    public function __construct(string $message = 'Too Many Requests', ?Throwable $previous = null, private ?array $errors = null)
     {
         parent::__construct($message, 429, $previous);
     }
@@ -53,6 +53,9 @@ class TooManyRequestsException extends Exception
      */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::tooManyRequests(message: $this->message, errors: $this->errors);
+        return ResponseHelper::tooManyRequests(
+            message: $this->message,
+            errors: $this->errors ?? [$this->message],
+        );
     }
 }

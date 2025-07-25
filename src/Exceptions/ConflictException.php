@@ -26,7 +26,7 @@ class ConflictException extends Exception
      * @param Throwable|null $previous Previous exception for chaining.
      * @param array $errors Optional array of error details.
      */
-    public function __construct(string $message = 'Conflict', ?Throwable $previous = null, private array $errors = [])
+    public function __construct(string $message = 'Conflict', ?Throwable $previous = null, private ?array $errors = null)
     {
         parent::__construct($message, 409, $previous);
     }
@@ -53,6 +53,9 @@ class ConflictException extends Exception
      */
     public function render(): RedirectResponse|JsonResponse
     {
-        return ResponseHelper::conflict(message: $this->message, errors: $this->errors);
+        return ResponseHelper::conflict(
+            message: $this->message,
+            errors: $this->errors ?? [$this->message],
+        );
     }
 }
