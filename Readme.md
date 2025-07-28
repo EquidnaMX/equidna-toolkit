@@ -1,4 +1,4 @@
-# Equidna Toolkit v0.6.4
+# Equidna Toolkit v0.6.5
 
 > **A modern Laravel package for multi-context, modular application development.**
 
@@ -204,6 +204,32 @@ Available exceptions:
 throw new BadRequestException('Invalid input', $previousException, ['field' => 'error']);
 ```
 
+## Form Request Validation (New in v0.6.5)
+
+### EquidnaFormRequest
+
+`EquidnaFormRequest` extends Laravel's `FormRequest` to provide context-aware validation error handling. On validation failure, it throws a `BadRequestException` with a standard message and the validation errors array. This ensures API, web, and other contexts receive unified, appropriate error responses.
+
+**Usage Example:**
+
+```php
+use Equidna\Toolkit\Http\Requests\EquidnaFormRequest;
+
+class StoreUserRequest extends EquidnaFormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string',
+            'email' => 'required|email',
+        ];
+    }
+}
+```
+
+On validation failure, a `BadRequestException` is thrown with a message and errors array, which is handled by the toolkit to provide a JSON response for API requests or a redirect with flash data for web requests, following the package's multi-context philosophy.
+
+---
 ## Configuration
 
 All config is referenced relative to the provider directory. Example:
